@@ -1,5 +1,7 @@
 from fastapi import Depends, FastAPI, Header, HTTPException
 from .routers import items, users
+from app.funnels.registration import registration_endpoint
+from app.funnels.interactions import interactions_endpoint
 
 app = FastAPI()
 
@@ -15,4 +17,14 @@ app.include_router(
     tags=["items"],
     dependencies=[Depends(get_token_header)],
     responses={404: {"Description": "Not found"}}
+)
+app.include_router(
+    registration_endpoint.router,
+    prefix="/registration",
+    tags=["registration"]
+)
+app.include_router(
+    interactions_endpoint.router,
+    prefix="/interactions",
+    tags=["interactions"]
 )
